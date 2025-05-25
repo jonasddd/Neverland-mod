@@ -1,252 +1,686 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Moderator Application - Neverland</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #0f0f23;
-      color: #e4e4e7;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply to Become a Moderator - Elite Discord Community</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/phosphor-icons@1.4.2/src/index.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.form-card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  padding: 2rem;
-  border-radius: 12px;
-  max-width: 600px;
-  width: 100%;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-}
+        :root {
+            --primary: #5865F2;
+            --primary-dark: #4752C4;
+            --secondary: #FF73FA;
+            --bg-dark: #0F0F23;
+            --bg-darker: #08081A;
+            --text-light: #E4E4E7;
+            --text-muted: #A1A1AA;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --glow: 0 0 40px rgba(88, 101, 242, 0.3);
+        }
 
-.discord-login {
-  background: linear-gradient(135deg, #5865f2, #4752c4);
-  color: white;
-  padding: 1rem;
-  width: 100%;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-.user-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-.logout-btn {
-  margin-left: auto;
-  padding: 0.5rem 1rem;
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #a1a1aa;
-  cursor: pointer;
-  border-radius: 6px;
-}
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
 
-form input, form textarea {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: none;
-  border-radius: 6px;
-  background: rgba(255,255,255,0.05);
-  color: #e4e4e7;
-}
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-.submit-btn {
-  background: linear-gradient(135deg, #5865f2, #4752c4);
-  color: white;
-  border: none;
-  padding: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  font-weight: 600;
-}
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
 
-.success {
-  background: #10b981;
-  padding: 1rem;
-  border-radius: 8px;
-  color: white;
-  margin-bottom: 1rem;
-  display: none;
-}
+        nav.scrolled {
+            background: rgba(15, 15, 35, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
 
-  </style>
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-light);
+        }
+
+        .burger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .burger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-light);
+            transition: 0.3s;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            transition: right 0.3s ease;
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu .close {
+            text-align: right;
+            margin-bottom: 2rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 1rem 0;
+            color: var(--text-light);
+            text-decoration: none;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+            background: radial-gradient(circle at 50% 50%, rgba(88, 101, 242, 0.1) 0%, transparent 50%);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, var(--text-light) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(88, 101, 242, 0.3);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
+        }
+
+        /* Sections */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 3rem;
+            letter-spacing: -0.02em;
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Mission Section */
+        .mission {
+            text-align: center;
+        }
+
+        .mission-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .mission p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .value-item {
+            text-align: center;
+        }
+
+        .value-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* How it Works */
+        .how-it-works {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Form */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-family: inherit;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* FAQ */
+        .faq-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .faq-question {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: var(--text-muted);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 1.5rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial {
+            text-align: center;
+        }
+
+        .testimonial-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-darker);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .burger {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .section {
+                padding: 4rem 1rem;
+            }
+
+            .values,
+            .how-it-works,
+            .testimonials {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Success Message */
+        .success-message {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .success-message.show {
+            display: flex;
+        }
+
+        /* Discord Login */
+        .discord-login {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(88, 101, 242, 0.3);
+            text-decoration: none;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .discord-login:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
+        }
+
+        .user-info {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info.show {
+            display: flex;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+
+        .user-details h3 {
+            margin: 0;
+            color: var(--text-light);
+        }
+
+        .user-details p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+        }
+
+        .form-disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
-  <h1>Apply as Moderator</h1>
-  <div class="form-card">
-    <div class="success" id="successMessage">Application submitted successfully!</div><div id="loginSection">
-  <button class="discord-login" onclick="loginWithDiscord()">Login with Discord</button>
-</div>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="logo">ModRecruit</a>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#mission">About</a></li>
+                <li><a href="#how-it-works">How it Works</a></li>
+                <li><a href="#apply">Apply</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="burger" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
 
-<div class="user-info" id="userInfo" style="display: none;">
-  <img src="" alt="Avatar" class="user-avatar" id="userAvatar">
-  <div>
-    <div id="userName"></div>
-    <div id="userTag" style="font-size: 0.85rem; color: #a1a1aa;"></div>
-  </div>
-  <button class="logout-btn" onclick="logout()">Logout</button>
-</div>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="close" onclick="toggleMobileMenu()">✕</div>
+        <a href="#hero" onclick="toggleMobileMenu()">Home</a>
+        <a href="#mission" onclick="toggleMobileMenu()">About</a>
+        <a href="#how-it-works" onclick="toggleMobileMenu()">How it Works</a>
+        <a href="#apply" onclick="toggleMobileMenu()">Apply</a>
+        <a href="#faq" onclick="toggleMobileMenu()">FAQ</a>
+        <a href="#contact" onclick="toggleMobileMenu()">Contact</a>
+    </div>
 
-<form id="applicationForm" class="form-disabled">
-  <input type="text" id="discordUsername" placeholder="Discord#1234" readonly required>
-  <input type="number" id="age" placeholder="Age" required>
-  <input type="text" id="availability" placeholder="Availability (e.g., Evenings, 10h/week)" required>
-  <textarea id="experience" placeholder="Previous moderation experience"></textarea>
-  <textarea id="motivation" placeholder="Why do you want to be a moderator?" required></textarea>
-  <button class="submit-btn" type="submit">Submit</button>
-</form>
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <h1>Apply to Become a Moderator</h1>
+            <p>Join our elite Discord community as a trusted moderator and help shape the future of our growing server.</p>
+            <a href="#apply" class="btn-primary">
+                <i class="ph-arrow-right"></i>
+                Apply Now
+            </a>
+        </div>
+    </section>
 
-  </div>  <script>
-    const DISCORD_CONFIG = {
-      CLIENT_ID: '1375104763917504633',
-      CLIENT_SECRET: 'DEIN_DISCORD_CLIENT_SECRET',
-      REDIRECT_URI: window.location.origin + window.location.pathname,
-      WEBHOOK_URL: 'https://discord.com/api/webhooks/1376200566971170999/it_7aTbzFDya5O0sRNFzMGlyi36nV9KiN9Bj93qxlTluIIVC2YAcUos0j6ACx7822KYp'
-    };
+    <!-- Mission Section -->
+    <section id="mission" class="section mission animate-on-scroll">
+        <h2 class="section-title">Why We're Hiring Moderators</h2>
+        <div class="mission-content">
+            <p>Our Discord community has grown exponentially, and we're looking for dedicated, trustworthy individuals to help maintain our high standards of engagement and safety. We believe in fostering a positive environment where every member feels valued and heard.</p>
+            
+            <div class="values">
+                <div class="glass-card">
+                    <div class="value-icon">
+                        <i class="ph-shield-check"></i>
+                    </div>
+                    <h3>Trustworthy</h3>
+                    <p>We value integrity and reliability above all else</p>
+                </div>
+                <div class="glass-card">
+                    <div class="value-icon">
+                        <i class="ph-users"></i>
+                    </div>
+                    <h3>Community-Focused</h3>
+                    <p>Passionate about building positive communities</p>
+                </div>
+                <div class="glass-card">
+                    <div class="value-icon">
+                        <i class="ph-clock"></i>
+                    </div>
+                    <h3>Available</h3>
+                    <p>Consistent presence and responsiveness</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    let currentUser = null;
+    <!-- How it Works -->
+    <section id="how-it-works" class="section animate-on-scroll">
+        <h2 class="section-title">How the Application Works</h2>
+        <div class="how-it-works">
+            <div class="glass-card step">
+                <div class="step-number">1</div>
+                <h3>Fill Out the Form</h3>
+                <p>Complete our comprehensive application form with your Discord details, experience, and motivation.</p>
+            </div>
+            <div class="glass-card step">
+                <div class="step-number">2</div>
+                <h3>Direct Submission</h3>
+                <p>Your application is sent directly to our Discord server owner for immediate review.</p>
+            </div>
+            <div class="glass-card step">
+                <div class="step-number">3</div>
+                <h3>Discord Response</h3>
+                <p>Receive a response via Discord message within 48-72 hours about your application status.</p>
+            </div>
+        </div>
+    </section>
 
-    function loginWithDiscord() {
-      const params = new URLSearchParams({
-        client_id: DISCORD_CONFIG.CLIENT_ID,
-        redirect_uri: DISCORD_CONFIG.REDIRECT_URI,
-        response_type: 'code',
-        scope: 'identify'
-      });
-      window.location.href = `https://discord.com/api/oauth2/authorize?${params}`;
-    }
+    <!-- Application Form -->
+    <section id="apply" class="section animate-on-scroll">
+        <h2 class="section-title">Application Form</h2>
+        <div class="form-container">
+            <div class="glass-card">
+                <div class="success-message" id="successMessage">
+                    <i class="ph-check-circle"></i>
+                    Application submitted successfully! You'll hear back from us via Discord soon.
+                </div>
 
-    async function handleDiscordCallback() {
-      const code = new URLSearchParams(window.location.search).get('code');
-      if (!code) return;
-
-      const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          client_id: DISCORD_CONFIG.CLIENT_ID,
-          client_secret: DISCORD_CONFIG.CLIENT_SECRET,
-          code: code,
-          grant_type: 'authorization_code',
-          redirect_uri: DISCORD_CONFIG.REDIRECT_URI
-        })
-      });
-
-      const tokenData = await tokenRes.json();
-      if (!tokenData.access_token) return;
-
-      const userRes = await fetch('https://discord.com/api/users/@me', {
-        headers: { Authorization: `Bearer ${tokenData.access_token}` }
-      });
-      const user = await userRes.json();
-
-      currentUser = {
-        id: user.id,
-        username: user.username,
-        discriminator: user.discriminator,
-        avatar: user.avatar,
-        tag: `${user.username}#${user.discriminator}`
-      };
-
-      localStorage.setItem('modUser', JSON.stringify(currentUser));
-      updateUIForLoggedInUser();
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
-    function updateUIForLoggedInUser() {
-      document.getElementById('loginSection').style.display = 'none';
-      document.getElementById('userInfo').style.display = 'flex';
-      document.getElementById('applicationForm').classList.remove('form-disabled');
-
-      document.getElementById('userName').textContent = currentUser.username;
-      document.getElementById('userTag').textContent = currentUser.tag;
-      document.getElementById('userAvatar').src = currentUser.avatar
-        ? `https://cdn.discordapp.com/avatars/${currentUser.id}/${currentUser.avatar}.png`
-        : `https://cdn.discordapp.com/embed/avatars/${currentUser.discriminator % 5}.png`;
-      document.getElementById('discordUsername').value = currentUser.tag;
-    }
-
-    function logout() {
-      localStorage.removeItem('modUser');
-      currentUser = null;
-      document.getElementById('loginSection').style.display = 'block';
-      document.getElementById('userInfo').style.display = 'none';
-      document.getElementById('applicationForm').classList.add('form-disabled');
-      document.getElementById('applicationForm').reset();
-    }
-
-    document.getElementById('applicationForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!currentUser) return alert("Please log in first.");
-
-      const data = {
-        age: document.getElementById('age').value,
-        availability: document.getElementById('availability').value,
-        experience: document.getElementById('experience').value || 'None',
-        motivation: document.getElementById('motivation').value
-      };
-
-      const embed = {
-        title: "New Mod Application",
-        color: 5865242,
-        thumbnail: {
-          url: currentUser.avatar
-            ? `https://cdn.discordapp.com/avatars/${currentUser.id}/${currentUser.avatar}.png`
-            : `https://cdn.discordapp.com/embed/avatars/${currentUser.discriminator % 5}.png`
-        },
-        fields: [
-          { name: "User", value: `<@${currentUser.id}> (${currentUser.tag})`, inline: true },
-          { name: "Age", value: data.age, inline: true },
-          { name: "Availability", value: data.availability },
-          { name: "Experience", value: data.experience },
-          { name: "Motivation", value: data.motivation }
-        ],
-        timestamp: new Date().toISOString(),
-        footer: { text: "Neverland Mod Form" }
-      };
-
-      await fetch(DISCORD_CONFIG.WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: 'New moderator application received:', embeds: [embed] })
-      });
-
-      document.getElementById('successMessage').style.display = 'block';
-      document.getElementById('applicationForm').reset();
-    });
-
-    window.addEventListener('load', () => {
-      const saved = localStorage.getItem('modUser');
-      if (saved) {
-        currentUser = JSON.parse(saved);
-        updateUIForLoggedInUser();
-      }
-      handleDiscordCallback();
-    });
-  </script></body>
-</html>
+                <!-- Discord Login Section -->
+                <div id="loginSection">
+                    <button class="discord-login" onclick="loginWithDiscord()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.317 4.369a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.211.375-.445.865-.608 1
