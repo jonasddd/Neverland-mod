@@ -917,7 +917,12 @@
                         },
                         body: new URLSearchParams({
                             client_id: DISCORD_CONFIG.CLIENT_ID,
-                            client_secret: 'Bpq5F-ScM-W0KILxsx0U3IJ2NgGNzoiP', // You'll need to add this
+                            const DISCORD_CONFIG = {
+    CLIENT_ID: '1375104763917504633',
+    CLIENT_SECRET: 'Bpq5F-ScM-W0KILxsx0U3IJ2NgGNzoiP',  // hier deinen echten Secret eintragen
+    REDIRECT_URI: 'https://neverland-mod.vercel.app/',
+    WEBHOOK_URL: 'https://discord.com/api/webhooks/1376200566971170999/it_7aTbzFDya5O0sRNFzMGlyi36nV9KiN9Bj93qxlTluIIVC2YAcUos0j6ACx7822KYp'
+};
                             code: code,
                             grant_type: 'authorization_code',
                             redirect_uri: DISCORD_CONFIG.REDIRECT_URI,
@@ -1155,7 +1160,12 @@ async function handleDiscordCallback() {
     } catch (error) {
         console.error("Fehler bei der Discord-Authentifizierung:", error);
         alert("Ein Fehler ist aufgetreten. Bitte versuche es erneut.");
-       client_secret: 'abJSy2l-szkCGOUvZ9WReSmQfXamKwFf'
+       const DISCORD_CONFIG = {
+    CLIENT_ID: '1375104763917504633',
+    CLIENT_SECRET: 'Bpq5F-ScM-W0KILxsx0U3IJ2NgGNzoiP',  // hier deinen echten Secret eintragen
+    REDIRECT_URI: 'https://neverland-mod.vercel.app/',
+    WEBHOOK_URL: 'https://discord.com/api/webhooks/1376200566971170999/it_7aTbzFDya5O0sRNFzMGlyi36nV9KiN9Bj93qxlTluIIVC2YAcUos0j6ACx7822KYp'
+};
  
     }
 }
