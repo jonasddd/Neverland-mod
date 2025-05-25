@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1103,53 +1104,60 @@
             // Check if we're returning from Discord OAuth
             handleDiscordCallback();
  
-   async function handleDiscordCallback() {
+async function handleDiscordCallback() {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     
-    if (code) {
-        try {
-            const tokenResponse = await fetch('https://discord.com/api/oauth2/token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    client_id: DISCORD_CONFIG.CLIENT_ID,
-                    client_secret: 'YOUR_DISCORD_BOT_CLIENT_SECRET', // Echten Secret hier einfügen
-                    code: code,
-                    grant_type: 'authorization_code',
-                    redirect_uri: DISCORD_CONFIG.REDIRECT_URI,
-                }),
-            });
+    if (!code) {
+        console.log("Kein Code vorhanden in der URL.");
+        return;
+    }
 
-            const tokenData = await tokenResponse.json();
-            
-            if (tokenData.access_token) {
-                const userResponse = await fetch('https://discord.com/api/users/@me', {
-                    headers: {
-                        Authorization: `Bearer ${tokenData.access_token}`,
-                    },
-                });
+    try {
+        const tokenResponse = await fetch('https://discord.com/api/oauth2/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                client_id: DISCORD_CONFIG.CLIENT_ID,
+                client_secret: 'DEIN_DISCORD_BOT_CLIENT_SECRET', // Hier deinen tatsächlichen Secret eingeben
+                code: code,
+                grant_type: 'authorization_code',
+                redirect_uri: DISCORD_CONFIG.REDIRECT_URI,
+            }),
+        });
 
-                const userData = await userResponse.json();
-                currentUser = {
-                    id: userData.id,
-                    username: userData.username,
-                    discriminator: userData.discriminator,
-                    avatar: userData.avatar,
-                    tag: `${userData.username}#${userData.discriminator}`
-                };
+        const tokenData = await tokenResponse.json();
+        console.log("Token-Daten:", tokenData);
 
-                updateUIForLoggedInUser();
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-        } catch (error) {
-            console.error('Fehler bei der Discord-Authentifizierung:', error);
-            alert('Die Authentifizierung ist fehlgeschlagen. Bitte versuche es erneut.');
+        if (!tokenData.access_token) {
+            alert("Token konnte nicht abgerufen werden. Überprüfe deinen Client-Secret.");
+            return;
         }
+
+        const userResponse = await fetch('https://discord.com/api/users/@me', {
+            headers: { Authorization: `Bearer ${tokenData.access_token}` },
+        });
+
+        const userData = await userResponse.json();
+        console.log("Benutzerdaten:", userData);
+
+        currentUser = {
+            id: userData.id,
+            username: userData.username,
+            discriminator: userData.discriminator,
+            avatar: userData.avatar,
+            tag: `${userData.username}#${userData.discriminator}`
+        };
+
+        updateUIForLoggedInUser();
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+    } catch (error) {
+        console.error("Fehler bei der Discord-Authentifizierung:", error);
+        alert("Ein Fehler ist aufgetreten. Bitte versuche es erneut.");
     }
 }
+
 
 
 
