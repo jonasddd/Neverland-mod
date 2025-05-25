@@ -922,6 +922,23 @@
     CLIENT_SECRET: 'Bpq5F-ScM-W0KILxsx0U3IJ2NgGNzoiP',  // hier deinen echten Secret eintragen
     REDIRECT_URI: 'https://neverland-mod.vercel.app/',
     WEBHOOK_URL: 'https://discord.com/api/webhooks/1376200566971170999/it_7aTbzFDya5O0sRNFzMGlyi36nV9KiN9Bj93qxlTluIIVC2YAcUos0j6ACx7822KYp'
+                                function logout() {
+    currentUser = null;
+    localStorage.removeItem('modUser');
+
+    const loginSection = document.getElementById('loginSection');
+    const userInfo = document.getElementById('userInfo');
+    const applicationForm = document.getElementById('applicationForm');
+    const discordUsernameInput = document.getElementById('discordUsername');
+
+    loginSection.style.display = 'block';
+    userInfo.classList.remove('show');
+    applicationForm.classList.add('form-disabled');
+
+    discordUsernameInput.value = '';
+    discordUsernameInput.readOnly = false;
+    applicationForm.reset();
+                                }loginSection.style.display
 };
                             code: code,
                             grant_type: 'authorization_code',
